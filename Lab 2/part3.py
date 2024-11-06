@@ -10,7 +10,7 @@ X, y = make_blobs(n_samples=50, centers=2, random_state=0, cluster_std=0.60)
 plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='autumn')
 plt.show()
 
-# Draws lines
+# Draws lines that separate the data
 xfit = np.linspace(-1, 3.5)
 plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='autumn')
 plt.plot([0.6], [2.1], 'x', color='red', markeredgewidth=2, markersize=10)
@@ -19,7 +19,7 @@ for m, b in [(1, 0.65), (0.5, 1.6), (-0.2, 2.9)]:
 plt.xlim(-1, 3.5)
 plt.show()
 
-# Add margins
+# Add margins to the lines from earlier
 xfit = np.linspace(-1, 3.5)
 plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='autumn')
 for m, b, d in [(1, 0.65, 0.33), (0.5, 1.6, 0.55), (-0.2, 2.9, 0.2)]:
@@ -30,11 +30,13 @@ plt.xlim(-1, 3.5)
 plt.show()
 
 # --------------------------------------- Fitting support ------------------------------------
+
+# Creates a linear kernel with a large C (Small margin)
 from sklearn.svm import SVC
 model = SVC(kernel='linear', C=1E10)
 model.fit(X, y)
 
-
+# Function to plot decision boundaries
 def plot_svc_decision_function(model, ax=None, plot_support=True):
  if ax is None:
     ax = plt.gca()
@@ -60,7 +62,7 @@ def plot_svc_decision_function(model, ax=None, plot_support=True):
  ax.set_xlim(xlim)
  ax.set_ylim(ylim)
  
- 
+# Calls the above function and draws a line with a margin
 plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='autumn')
 plot_svc_decision_function(model)
 plt.show()
@@ -68,7 +70,7 @@ plt.show()
 
 print(model.support_vectors_)
 
-
+# Applies model to the first 60 datapoints and the first 120 datapoints respectively
 def plot_svm(N=10, ax=None):
  X, y = make_blobs(n_samples=200, centers=2, random_state=0, cluster_std=0.60)
  X = X[:N]
@@ -89,6 +91,7 @@ for axi, N in zip(ax, [60, 120]):
 plt.show()
 
 
+# Data which is not linearly seperable
 from sklearn.datasets import make_circles
 X, y = make_circles(100, factor=.1, noise=.1)
 clf = SVC(kernel='linear').fit(X, y)
@@ -96,9 +99,10 @@ plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='autumn')
 plot_svc_decision_function(clf, plot_support=False)
 plt.show()
 
-
+# Projection which is a radial basis function centered on the middle clump
 r = np.exp(-(X ** 2).sum(1))
 
+# Visualize data in 3-dimensions
 from mpl_toolkits import mplot3d
 ax = plt.subplot(projection='3d')
 ax.scatter3D(X[:, 0], X[:, 1], r, s=50, cmap='autumn')
@@ -109,6 +113,7 @@ ax.set_zlabel('r')
 plt.show()
 
 
+# Creates rbf kernel (rbf = Radial Basis Function)
 clf = SVC(kernel='rbf', C=1E6)
 clf.fit(X, y)
 
@@ -118,11 +123,13 @@ plt.scatter(clf.support_vectors_[:, 0], clf.support_vectors_[:, 1], s=300, lw=1,
 plt.show()
 
 # -------------------------------------- Tuning --------------------------------------
+
+# Data with a lot of overlaps
 X, y = make_blobs(n_samples=100, centers=2, random_state=0, cluster_std=1.2)
 plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='autumn')
 plt.show()
 
-
+# Shows how changing C affects the softness of the margin
 X, y = make_blobs(n_samples=100, centers=2, random_state=0, cluster_std=0.8)
 fig, ax = plt.subplots(1, 2, figsize=(16, 6))
 fig.subplots_adjust(left=0.0625, right=0.95, wspace=0.1)
