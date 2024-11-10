@@ -64,7 +64,8 @@ class GaussNB:
         """
         separated = [[x for x, t in zip(data, target) if t == c] for c in self.target_values]
         groups=[np.array(separated[0]),np.array(separated[1]),np.array(separated[2])]
-        return np.array(groups)
+        #return np.array(groups)
+        return np.asarray(groups, dtype="object")
 
     def summarize(self,data):
         """
@@ -228,5 +229,7 @@ def main():
     accuracy = nb.accuracy(y_test, predicted)
     print('Accuracy: %.3f' % accuracy)
 
-if __name__ == '__main__':
-    main()
+#if __name__ == '__main__':
+#    main()
+
+main()
