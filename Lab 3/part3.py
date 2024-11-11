@@ -24,6 +24,11 @@ X=data
 Y=target
 cv = 10
 
+# Randomization
+indices = np.random.permutation(len(Y))
+X = X[indices]
+Y = Y[indices]
+
 #Create the different models
 
 print('\nlinear regression')
@@ -154,6 +159,9 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+
 df = pd.read_csv('Lab 3\data_cars.csv', header=None)
 
 for i in range(len(df.columns)):
@@ -201,6 +209,16 @@ method = 'k nearest neighbours'
 clf = KNeighborsClassifier(weights='distance',n_neighbors=5)
 y_pred = cross_val_predict(clf, X,Y, cv=cv)
 CalcMeasures(method,y_pred,Y)
+
+method = 'decision trees'
+clf = DecisionTreeClassifier()
+y_pred = cross_val_predict(clf, X ,Y, cv=cv)
+CalcMeasures(method, y_pred,Y)
+
+method = 'random forest'
+clf = RandomForestClassifier(n_estimators=20, random_state=1)
+y_pred = cross_val_predict(clf, X, Y, cv=cv)
+CalcMeasures(method, y_pred, Y)
 
 print(df_f1)
 
